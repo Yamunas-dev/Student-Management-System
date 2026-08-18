@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${student.studentName} + ' · StudentHub'">Student Details</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar('students')}"></div>
+
+<div class="page-wrap" style="padding-top: 48px;">
+
+    <div class="ledger-card">
+        <div class="ledger-head">
+            <div class="avatar" th:text="${student.initials}">??</div>
+            <div class="head-text">
+                <span class="eyebrow">STUDENT RECORD</span>
+                <h1 th:text="${student.studentName}">Student Name</h1>
+                <div class="dept" th:text="${student.department}">Department</div>
+            </div>
+            <span class="call-tag" style="position:absolute; top:24px; right:28px;" th:text="${student.rollNumber}">ROLL</span>
+        </div>
+        <div class="ledger-body">
+            <div class="ledger-facts">
+                <div class="fact">
+                    <span class="eyebrow">Semester</span>
+                    <span class="value" th:text="${student.semester}">—</span>
+                </div>
+                <div class="fact">
+                    <span class="eyebrow">Email</span>
+                    <span class="value" th:text="${student.email}">—</span>
+                </div>
+                <div class="fact">
+                    <span class="eyebrow">Phone</span>
+                    <span class="value" th:text="${student.phone}">—</span>
+                </div>
+                <div class="fact">
+                    <span class="eyebrow">CGPA</span>
+                    <span class="value">
+                        <span class="cgpa-pill" th:classappend="${student.cgpa < 6.0} ? 'low' : ''" th:text="${#numbers.formatDecimal(student.cgpa, 1, 2)}">0.00</span>
+                    </span>
+                </div>
+            </div>
+
+            <span class="desc-label">Address</span>
+            <p class="desc" th:if="${student.address != null and !student.address.isEmpty()}" th:text="${student.address}">
+                Student address goes here.
+            </p>
+            <p class="desc" th:unless="${student.address != null and !student.address.isEmpty()}" style="color: var(--muted); font-style: italic;">
+                No address has been added for this student yet.
+            </p>
+
+            <div class="ledger-actions">
+                <a th:href="@{/students/edit/{id}(id=${student.id})}" class="btn btn-brass">Edit Student</a>
+                <a th:href="@{/students}" class="btn btn-ghost">Back to Roster</a>
+                <a th:href="@{/students/delete/{id}(id=${student.id})}"
+                   onclick="return confirm('Delete this student record? This cannot be undone.');"
+                   style="margin-left: auto; color: var(--danger); font-weight: 600; align-self: center;">Delete</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

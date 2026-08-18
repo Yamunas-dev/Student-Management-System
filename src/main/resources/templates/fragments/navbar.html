@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav class="navbar" th:fragment="navbar(active)">
+    <div class="navbar-inner">
+        <a class="brand" th:href="@{/}">
+            <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 5L28 11L16 17L4 11L16 5Z" fill="white" fill-opacity="0.9"/>
+                <path d="M9 14.5V21C9 21 12 24 16 24C20 24 23 21 23 21V14.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M28 11V18" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            <span>StudentHub</span>
+        </a>
+        <div class="nav-links">
+            <a th:href="@{/}" th:classappend="${active == 'dashboard'} ? 'active' : ''">Dashboard</a>
+            <a th:href="@{/students}" th:classappend="${active == 'students'} ? 'active' : ''">All Students</a>
+            <a th:href="@{/students/new}" th:classappend="${active == 'new'} ? 'active' : ''">Add Student</a>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add Student · StudentHub</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar('new')}"></div>
+
+<div class="page-wrap" style="padding-top: 48px;">
+    <div class="form-card">
+        <h2>Add a Student</h2>
+        <p class="lede">Enter the details below to enroll a new student in the roster.</p>
+
+        <form th:action="@{/students/save}" th:object="${student}" method="post">
+            <div class="field-row">
+                <div class="field">
+                    <label for="studentName">Student Name</label>
+                    <input type="text" id="studentName" th:field="*{studentName}" placeholder="e.g. Arun Kumar" required>
+                </div>
+                <div class="field">
+                    <label for="rollNumber">Roll Number</label>
+                    <input type="text" id="rollNumber" th:field="*{rollNumber}" placeholder="e.g. CS2023045" required>
+                </div>
+            </div>
+
+            <div class="field-row">
+                <div class="field">
+                    <label for="department">Department</label>
+                    <input type="text" id="department" th:field="*{department}" placeholder="e.g. Computer Science" required>
+                </div>
+                <div class="field">
+                    <label for="semester">Semester</label>
+                    <input type="text" id="semester" th:field="*{semester}" placeholder="e.g. Semester 5" required>
+                </div>
+            </div>
+
+            <div class="field-row">
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" th:field="*{email}" placeholder="e.g. arun.kumar@college.edu" required>
+                </div>
+                <div class="field">
+                    <label for="phone">Phone</label>
+                    <input type="text" id="phone" th:field="*{phone}" placeholder="e.g. 9876543210" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="cgpa">CGPA</label>
+                <input type="number" id="cgpa" th:field="*{cgpa}" placeholder="e.g. 8.4" step="0.01" min="0" max="10" required>
+            </div>
+
+            <div class="field">
+                <label for="address">Address</label>
+                <textarea id="address" th:field="*{address}" placeholder="Residential address"></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-brass">Save Student</button>
+                <a th:href="@{/students}" class="btn btn-ghost">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

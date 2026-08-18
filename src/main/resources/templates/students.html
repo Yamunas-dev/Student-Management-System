@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>All Students · StudentHub</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar('students')}"></div>
+
+<div class="page-wrap" style="padding-top: 36px;">
+
+    <div class="section-head">
+        <h2>All Students</h2>
+        <a th:href="@{/students/new}" class="btn btn-brass">+ Add Student</a>
+    </div>
+
+    <form class="search-bar" th:action="@{/students}" method="get">
+        <input type="text" name="keyword" placeholder="Search by name, roll number or department…" th:value="${keyword}">
+        <button type="submit" class="btn btn-ghost">Search</button>
+    </form>
+
+    <div th:if="${#lists.isEmpty(listStudents)}" class="empty-state">
+        <h3>No students found</h3>
+        <p th:if="${keyword != null and !keyword.isEmpty()}">Nothing matches "<span th:text="${keyword}"></span>". Try a different search.</p>
+        <p th:unless="${keyword != null and !keyword.isEmpty()}">Add your first student to start building the roster.</p>
+        <a th:href="@{/students/new}" class="btn btn-brass">+ Add a Student</a>
+    </div>
+
+    <div class="catalog-grid" th:unless="${#lists.isEmpty(listStudents)}">
+        <div class="catalog-card" th:each="student : ${listStudents}">
+            <div class="card-top">
+                <div class="avatar" th:text="${student.initials}">??</div>
+                <div class="who">
+                    <h3 th:text="${student.studentName}">Student Name</h3>
+                    <span class="call-tag" th:text="${student.rollNumber}">ROLL</span>
+                </div>
+            </div>
+            <div class="fact-grid">
+                <div class="fact">
+                    <span class="eyebrow">Department</span>
+                    <span class="value" th:text="${student.department}">—</span>
+                </div>
+                <div class="fact">
+                    <span class="eyebrow">Semester</span>
+                    <span class="value" th:text="${student.semester}">—</span>
+                </div>
+                <div class="fact">
+                    <span class="eyebrow">Email</span>
+                    <span class="value" th:text="${student.email}">—</span>
+                </div>
+                <div class="fact">
+                    <span class="eyebrow">CGPA</span>
+                    <span class="value">
+                        <span class="cgpa-pill" th:classappend="${student.cgpa < 6.0} ? 'low' : ''" th:text="${#numbers.formatDecimal(student.cgpa, 1, 2)}">0.00</span>
+                    </span>
+                </div>
+            </div>
+            <div class="card-actions">
+                <a th:href="@{/students/view/{id}(id=${student.id})}">View</a>
+                <a th:href="@{/students/edit/{id}(id=${student.id})}" class="accent">Edit</a>
+                <a th:href="@{/students/delete/{id}(id=${student.id})}" class="danger"
+                   onclick="return confirm('Delete this student record? This cannot be undone.');">Delete</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

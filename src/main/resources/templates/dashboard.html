@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard · StudentHub</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar('dashboard')}"></div>
+
+<section class="hero">
+    <div class="hero-inner">
+        <span class="eyebrow">CAMPUS STUDENT DIRECTORY</span>
+        <h1>Every student your institute serves, in one dashboard.</h1>
+        <p class="lede">Track departments, semesters and academic performance in a single place — enroll a new student, search the full roster, or review any record in detail.</p>
+        <a th:href="@{/students/new}" class="btn btn-brass">+ Add a Student</a>
+
+        <div class="stat-row">
+            <div class="stat-tile">
+                <div class="stat-number" th:text="${totalStudents}">0</div>
+                <div class="stat-label">Students Enrolled</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-number" th:text="${totalDepartments}">0</div>
+                <div class="stat-label">Departments</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-number" th:text="${totalSemesters}">0</div>
+                <div class="stat-label">Semesters</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-number" th:text="${#numbers.formatDecimal(averageCgpa, 1, 2)}">0.00</div>
+                <div class="stat-label">Average CGPA</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="page-wrap">
+    <div class="section-head">
+        <h2>Recently Added</h2>
+        <a th:href="@{/students}">View full roster →</a>
+    </div>
+
+    <div th:if="${#lists.isEmpty(recentStudents)}" class="empty-state">
+        <h3>No students yet</h3>
+        <p>Add your first student to start building the roster.</p>
+        <a th:href="@{/students/new}" class="btn btn-brass">+ Add a Student</a>
+    </div>
+
+    <div class="catalog-grid" th:unless="${#lists.isEmpty(recentStudents)}">
+        <div class="catalog-card" th:each="student : ${recentStudents}">
+            <div class="card-top">
+                <div class="avatar" th:text="${student.initials}">??</div>
+                <div class="who">
+                    <h3 th:text="${student.studentName}">Student Name</h3>
+                    <span class="call-tag" th:text="${student.rollNumber}">ROLL</span>
+                </div>
+            </div>
+            <div class="fact-grid">
+                <div class="fact">
+                    <span class="eyebrow">Department</span>
+                    <span class="value" th:text="${student.department}">—</span>
+                </div>
+                <div class="fact">
+                    <span class="eyebrow">Semester</span>
+                    <span class="value" th:text="${student.semester}">—</span>
+                </div>
+            </div>
+            <div class="card-actions">
+                <a th:href="@{/students/view/{id}(id=${student.id})}">View</a>
+                <a th:href="@{/students/edit/{id}(id=${student.id})}" class="accent">Edit</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>
